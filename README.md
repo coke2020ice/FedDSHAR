@@ -24,8 +24,8 @@ The content of this repository will be made publicly available once the associat
 - Fedrono [[paper](https://arxiv.org/abs/2305.05230)][[code](https://github.com/wnn2000/FedNoRo/stargazers)]
 
 ## Dependencies
-python 3.7.9 (Anaconda)
-PyTorch 1.7.0
-torchvision 0.8.1
-CUDA 11.2
-cuDNN 8.0.4
+python 3.7.9 (Anaconda)\
+PyTorch 1.7.0\
+torchvision 0.8.1\
+CUDA 11.2\
+cuDNN 8.0.4\
