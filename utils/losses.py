@@ -15,15 +15,6 @@ class LA_R(nn.Module):
         self.m_list = m_list.view(1, -1)
 
     def forward(self, x1,x2 ,target, soft_target, w_kd ,indices1,indices2):
-        # 检查 x1 的第二维是否和 self.m_list 的第二维一致
-        
-        # expected_dim = self.m_list.shape[1]
-        # if x1.shape[1] < expected_dim:
-        #     diff = expected_dim - x1.shape[1]
-        #     # 在 x1 的后面补零，使其尺寸达到 expected_dim
-        #     x1 = F.pad(x1, (0, diff), mode='constant', value=0)
-        #     x2 = F.pad(x2, (0, diff), mode='constant', value=0)
-        
         
         x_m1 = x1 + self.m_list
         x_m2 = x2 + self.m_list
