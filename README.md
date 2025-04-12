@@ -85,14 +85,12 @@ For benchmark datasets, please refer to the [HARBOX dataset](https://github.com/
 - **FedNoRo**  
   [Paper](https://arxiv.org/abs/2305.05230) | [Code](https://github.com/wnn2000/FedNoRo/stargazers)
 
----
 
-## Publication Pending
 
-The contents of this repository will be made publicly available once the associated research paper is accepted for publication. Thank you for your understanding and patience.
 
 ---
 
-## License
+## Publication
 
-[To be determined upon publication]
+This work has been accepted for publication. The final published article is available at [ScienceDirect](https://www.sciencedirect.com/science/article/pii/S0167739X25000196).
+
