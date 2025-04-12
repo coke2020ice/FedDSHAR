@@ -1,8 +1,7 @@
 """
 basetrain_teacher.py
 --------------------
-该模块负责MR_model的训练。函数 train_teacher(args) 加载训练和测试数据，
-根据参数设置训练 HARCNN 模型，并将模型保存为 args.teacher_save_path。
+
 """
 
 import os
@@ -13,10 +12,10 @@ import torch.optim as optim
 from torch.utils.data import Dataset, DataLoader
 from model.build_model import HARCNN
 from utils.loss_dp import DPLoss
-# 定义数据集加载类（与原来 basetrain.py 中类似）
+
 class LoadDataset(Dataset):
     def __init__(self, dataset1,dataset2):
-        # 假设数据集字典中 'x' 包含原始数据与增强数据拼接，前半部分为原始数据
+
         total = dataset1['x'].shape[0]
         half = total // 2
         self.x_data = dataset1['x'][:half]
@@ -30,7 +29,6 @@ class LoadDataset(Dataset):
     def __len__(self):
         return self.length
 
-# 定义测试函数，用于评估教师模型
 def test_model(test_loader, model, device):
     model.eval()
     all_preds, all_labels = [], []
@@ -47,7 +45,6 @@ def test_model(test_loader, model, device):
 
 def MR_model(args):
     device = args.device
-    # 加载训练数据
     data_dir = os.path.join('dataset', 'harbox')
     
     train_file = os.path.join(data_dir, 'basedata.npz')
@@ -81,7 +78,6 @@ def MR_model(args):
     
     train_dataset = LoadDataset(train_data,train_data_aug)
     train_loader = DataLoader(dataset=train_dataset, batch_size=args.batch_size,shuffle=True, num_workers=0)
-    # 加载测试数据
     
     
     train_file = os.path.join(data_dir, 'test.npz')
@@ -92,16 +88,14 @@ def MR_model(args):
     test_loader = DataLoader(dataset=test_dataset, batch_size=len(test_dataset),
                              shuffle=False, drop_last=True, num_workers=0)
 
-    # 初始化模型
-    data_name = "harbox"  # 可根据需要扩展到参数
+    data_name = "harbox" 
     model = HARCNN(data_name).to(device)
     criterion = nn.CrossEntropyLoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=args.teacher_lr)
     
-    use_data_aug = False  # 教师训练中是否使用数据增强，默认关闭
+    use_data_aug = False  
     dp='dis'
     n_feature=725
-    print("开始教师模型训练...")
     for epoch in range(args.teacher_epochs):
         model.train()
         for batch_idx, (data, data_aug, labels) in enumerate(train_loader):
@@ -122,7 +116,6 @@ def MR_model(args):
             dp_layer = DPLoss(loss_type=dp, input_dim=n_feature)
             loss_dp = dp_layer.compute(raw_feature, aug_feature)
 
-            # 直接在GPU上合并预测结果和标签
             pre_all = torch.cat([pre1, pre2], dim=0)
             labels_all = torch.cat([labels, labels], dim=0)
 
@@ -131,7 +124,6 @@ def MR_model(args):
             optimizer.step()
            # torch.nn.utils.clip_grad_norm_(model.parameters(), 100)
         acc = test_model(test_loader, model, device)
-        print(f"MR_model Epoch [{epoch+1}/{args.teacher_epochs}] - 测试准确率: {acc:.4f}")
-    # 保存教师模型
+        print(f"MR_model Epoch [{epoch+1}/{args.teacher_epochs}] - test: {acc:.4f}")
     torch.save(model.state_dict(), args.teacher_save_path)
-    print(f"MR_model已保存至 {args.teacher_save_path}")
+    print(f"MR_model save {args.teacher_save_path}")
