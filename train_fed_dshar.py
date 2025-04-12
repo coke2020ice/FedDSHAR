@@ -1,12 +1,7 @@
 """
 train_fed_dshar.py
 ------------------
-该模块实现联邦 DS-HAR 训练，其训练过程中使用教师模型进行知识蒸馏。
-函数 train_fed_dshar(args, teacher_model) 完成以下步骤：
-  1. 加载联邦训练数据（包括原始数据和数据增强的版本）。
-  2. 利用 LocalUpdate 等模块在各客户端上进行局部训练，并使用 FedAvg 聚合模型。
-  3. 整个训练过程中教师模型作为预训练模型提供参考。
-注意：部分工具函数（如 LocalUpdate、FedAvg、globaltest 等）在 utils 模块中，此处假设它们已实现。
+
 """
 
 import os
